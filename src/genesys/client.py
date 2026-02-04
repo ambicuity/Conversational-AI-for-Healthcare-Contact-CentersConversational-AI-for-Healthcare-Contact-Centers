@@ -3,7 +3,7 @@
 import requests
 import base64
 from typing import Dict, Any, Optional, List
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from config.config import config
 from src.utils.logging import get_logger
@@ -185,7 +185,7 @@ class GenesysClient:
         payload = {
             "conversationId": conversation_id,
             "assistData": assist_data,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": utcnow().isoformat()
         }
         
         logger.info(f"Sending Agent Assist notification for conversation {conversation_id}")

@@ -9,7 +9,7 @@ try:
 except ImportError:
     cloud_logging = None
 
-from .  import utcnow
+from . import utcnow
 
 
 class HIPAACompliantLogger:
