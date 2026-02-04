@@ -1,0 +1,11 @@
+runtime: python39
+entrypoint: gunicorn -b :$PORT app:app
+
+env_variables:
+  ENVIRONMENT: "production"
+  PYTHONUNBUFFERED: "1"
+
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+  target_cpu_utilization: 0.65

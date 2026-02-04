@@ -1,0 +1,11 @@
+{
+  "resource": {
+    "type": "cloud_run_revision",
+    "labels": {
+      "service_name": "healthcare-conversational-ai"
+    }
+  },
+  "severity": "INFO",
+  "logName": "projects/PROJECT_ID/logs/healthcare-conversational-ai",
+  "textPayload": "Sample log entry for Healthcare Conversational AI Platform"
+}
