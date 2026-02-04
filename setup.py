@@ -18,10 +18,12 @@ setup(
         "google-cloud-logging>=3.8.0",
         "google-cloud-secret-manager>=2.16.4",
         "flask>=3.0.0",
+        "gunicorn>=22.0.0",
         "requests>=2.31.0",
         "pydantic>=2.5.0",
         "celery>=5.3.4",
         "redis>=5.0.1",
+        "cryptography>=42.0.4",
     ],
     extras_require={
         "dev": [
