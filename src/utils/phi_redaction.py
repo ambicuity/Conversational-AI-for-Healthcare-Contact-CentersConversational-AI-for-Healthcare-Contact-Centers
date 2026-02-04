@@ -12,7 +12,7 @@ class PHIRedactor:
         # Social Security Numbers
         "ssn": r"\b\d{3}-\d{2}-\d{4}\b|\b\d{9}\b",
         # Phone Numbers
-        "phone": r"\b\d{3}[-.\s]??\d{3}[-.\s]??\d{4}\b|\(\d{3}\)\s*\d{3}[-.\s]??\d{4}\b",
+        "phone": r"\b\d{3}[-.\s]?\d{3}[-.\s]?\d{4}\b|\(\d{3}\)\s*\d{3}[-.\s]?\d{4}\b",
         # Email Addresses
         "email": r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
         # Medical Record Numbers (MRN) - assuming format MRN followed by digits

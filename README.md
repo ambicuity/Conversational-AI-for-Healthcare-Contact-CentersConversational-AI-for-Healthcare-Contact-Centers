@@ -23,8 +23,8 @@ A production-ready, HIPAA-aware conversational AI system that:
 
 ```bash
 # Clone repository
-git clone https://github.com/ambicuity/Conversational-AI-for-Healthcare-Contact-CentersConversational-AI-for-Healthcare-Contact-Centers.git
-cd Conversational-AI-for-Healthcare-Contact-CentersConversational-AI-for-Healthcare-Contact-Centers
+git clone https://github.com/ambicuity/Conversational-AI-for-Healthcare-Contact-Centers.git
+cd Conversational-AI-for-Healthcare-Contact-Centers
 
 # Setup environment
 python -m venv venv
