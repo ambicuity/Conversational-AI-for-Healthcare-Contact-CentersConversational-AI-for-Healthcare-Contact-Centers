@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: healthcare-conversational-ai
+spec:
+  type: LoadBalancer
+  selector:
+    app: healthcare-conversational-ai
+  ports:
+    - port: 80
+      targetPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcare-conversational-ai
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: healthcare-conversational-ai
+  template:
+    metadata:
+      labels:
+        app: healthcare-conversational-ai
+    spec:
+      containers:
+      - name: app
+        image: gcr.io/PROJECT_ID/healthcare-conversational-ai:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ENVIRONMENT
+          value: "production"
+        - name: GCP_PROJECT_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: gcp-project-id
+        - name: DIALOGFLOW_AGENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: dialogflow-agent-id
+        - name: GENESYS_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: genesys-client-id
+        - name: GENESYS_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets
+              key: genesys-client-secret
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
