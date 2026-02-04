@@ -3,10 +3,11 @@
 import requests
 import base64
 from typing import Dict, Any, Optional, List
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from config.config import config
 from src.utils.logging import get_logger
+from src.utils import utcnow
 
 logger = get_logger(__name__)
 
@@ -47,7 +48,7 @@ class GenesysClient:
         """
         # Check if token is still valid
         if self.access_token and self.token_expires_at:
-            if datetime.utcnow() < self.token_expires_at:
+            if utcnow() < self.token_expires_at:
                 return self.access_token
         
         # Request new token
@@ -78,7 +79,7 @@ class GenesysClient:
             
             # Set expiration (with 5 minute buffer)
             expires_in = token_data.get("expires_in", 3600)
-            self.token_expires_at = datetime.utcnow() + timedelta(seconds=expires_in - 300)
+            self.token_expires_at = utcnow() + timedelta(seconds=expires_in - 300)
             
             logger.info("Obtained new Genesys access token")
             

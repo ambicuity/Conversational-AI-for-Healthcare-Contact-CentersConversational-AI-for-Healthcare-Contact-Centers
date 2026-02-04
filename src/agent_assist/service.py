@@ -1,25 +1,12 @@
-"""
-Agent Assist Module
-
-Provides real-time assistance to live agents including:
-- Conversation summaries
-- Smart reply suggestions
-- Knowledge base snippets
-- Next-best action recommendations
-
-This module improves:
-- First Call Resolution (FCR)
-- Average Handle Time (AHT)
-- Customer Satisfaction (CSAT)
-"""
+"""Real-time conversation tracking and assistance"""
 
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
-from datetime import datetime
 import asyncio
 
 from src.llm_services.gemini_service import gemini_service
 from src.utils.logging import get_logger
+from src.utils import utcnow
 
 logger = get_logger(__name__)
 
@@ -80,7 +67,7 @@ class AgentAssistService:
         message = {
             "role": role,
             "text": text,
-            "timestamp": timestamp or datetime.utcnow().isoformat()
+            "timestamp": timestamp or utcnow().isoformat()
         }
         
         self.active_conversations[conversation_id].append(message)
@@ -132,7 +119,7 @@ class AgentAssistService:
                 logger.warning(f"No messages found for conversation {conversation_id}")
                 return AgentAssistResponse(
                     conversation_id=conversation_id,
-                    timestamp=datetime.utcnow().isoformat()
+                    timestamp=utcnow().isoformat()
                 )
             
             # Run assist operations concurrently for speed
@@ -181,7 +168,7 @@ class AgentAssistService:
             # Build response
             response = AgentAssistResponse(
                 conversation_id=conversation_id,
-                timestamp=datetime.utcnow().isoformat(),
+                timestamp=utcnow().isoformat(),
                 summary=results.get("summary"),
                 smart_replies=results.get("smart_replies"),
                 knowledge_snippets=results.get("knowledge"),

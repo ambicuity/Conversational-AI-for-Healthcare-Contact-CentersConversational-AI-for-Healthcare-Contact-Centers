@@ -219,12 +219,22 @@ Provide your response in JSON format:
                 if not isinstance(replies, list):
                     replies = [response.text.strip()]
             except json.JSONDecodeError:
-                # Fallback: split by newlines
-                replies = [
-                    line.strip().lstrip('123.-*')
-                    for line in response.text.strip().split('\n')
-                    if line.strip()
-                ][:num_replies]
+                # Fallback: split by newlines and remove list markers
+                replies = []
+                for line in response.text.strip().split('\n'):
+                    if line.strip():
+                        # Remove common list prefixes (1., 2., -, *)
+                        cleaned = line.strip()
+                        if cleaned and len(cleaned) > 2:
+                            # Remove numbered list markers like "1. ", "2. "
+                            if cleaned[0].isdigit() and cleaned[1] in '.):':
+                                cleaned = cleaned[2:].strip()
+                            # Remove bullet points
+                            elif cleaned[0] in '-*•':
+                                cleaned = cleaned[1:].strip()
+                        if cleaned:
+                            replies.append(cleaned)
+                replies = replies[:num_replies]
             
             # Calculate confidence scores (placeholder - in production, use more sophisticated scoring)
             confidence_scores = [0.85, 0.80, 0.75][:len(replies)]

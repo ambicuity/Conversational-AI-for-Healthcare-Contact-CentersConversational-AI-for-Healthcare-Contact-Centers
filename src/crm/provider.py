@@ -2,9 +2,9 @@
 
 from abc import ABC, abstractmethod
 from typing import Dict, Any, List, Optional
-from datetime import datetime
 
 from src.utils.logging import get_logger
+from src.utils import utcnow
 
 logger = get_logger(__name__)
 
@@ -219,7 +219,7 @@ class SalesforceCRM(CRMProvider):
         """Create case in Salesforce."""
         logger.info(f"Creating case for patient {patient_id}: {subject}")
         
-        case_id = f"case_{patient_id}_{datetime.utcnow().timestamp()}"
+        case_id = f"case_{patient_id}_{utcnow().timestamp()}"
         
         return {
             "case_id": case_id,
@@ -228,7 +228,7 @@ class SalesforceCRM(CRMProvider):
             "description": description,
             "priority": priority,
             "status": "new",
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": utcnow().isoformat()
         }
     
     def update_case(
@@ -242,7 +242,7 @@ class SalesforceCRM(CRMProvider):
         return {
             "case_id": case_id,
             "updated_fields": list(updates.keys()),
-            "updated_at": datetime.utcnow().isoformat()
+            "updated_at": utcnow().isoformat()
         }
     
     def log_conversation(
@@ -261,7 +261,7 @@ class SalesforceCRM(CRMProvider):
             "conversation_id": conversation_id,
             "summary": conversation_summary,
             "metadata": metadata or {},
-            "logged_at": datetime.utcnow().isoformat()
+            "logged_at": utcnow().isoformat()
         }
     
     def get_appointments(
@@ -295,7 +295,7 @@ class SalesforceCRM(CRMProvider):
         """Schedule appointment in Salesforce."""
         logger.info(f"Scheduling {appointment_type} for patient {patient_id}")
         
-        appointment_id = f"appt_{patient_id}_{datetime.utcnow().timestamp()}"
+        appointment_id = f"appt_{patient_id}_{utcnow().timestamp()}"
         
         return {
             "appointment_id": appointment_id,
@@ -305,7 +305,7 @@ class SalesforceCRM(CRMProvider):
             "provider_id": provider_id,
             "notes": notes,
             "status": "scheduled",
-            "created_at": datetime.utcnow().isoformat()
+            "created_at": utcnow().isoformat()
         }
     
     def get_insurance_info(self, patient_id: str) -> Dict[str, Any]:

@@ -2,9 +2,14 @@
 
 import logging
 import json
-from datetime import datetime
 from typing import Any, Dict, Optional
-from google.cloud import logging as cloud_logging
+
+try:
+    from google.cloud import logging as cloud_logging
+except ImportError:
+    cloud_logging = None
+
+from .  import utcnow
 
 
 class HIPAACompliantLogger:
@@ -31,7 +36,7 @@ class HIPAACompliantLogger:
         
         # Cloud logging client (optional)
         self.cloud_client = None
-        if enable_cloud_logging:
+        if enable_cloud_logging and cloud_logging:
             try:
                 self.cloud_client = cloud_logging.Client()
                 self.cloud_client.setup_logging()
@@ -102,7 +107,7 @@ class HIPAACompliantLogger:
             details: Event details (will be sanitized)
         """
         audit_entry = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': utcnow().isoformat(),
             'event_type': event_type,
             'user_id': user_id,
             'details': self._sanitize_log_data(details)
